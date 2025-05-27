@@ -1,0 +1,158 @@
+
+
+/* 1. Reset with Universal Selector */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 2. Body Styles */
+body {
+  background: url('background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  background-color: rgba(240, 240, 240, 0.9); /* fallback */
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+/* 3. Header Styles */
+#mainHeader {
+  background: linear-gradient(to right, #4CAF50, #81C784);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* 4. Typography */
+h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+}
+
+h3, p {
+  color: #444;
+  font-size: 1rem;
+}
+
+/* Style for main CTA button */
+.cta-button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* 5. Event Cards */
+.eventCard {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin: 15px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+  background-color: #fff;
+}
+
+/* 6. Link Styling */
+a:link {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #003366;
+  text-decoration: underline;
+}
+
+a:active {
+  color: #ff0000;
+}
+
+a:visited {
+  color: #800080;
+}
+
+/* 7. List Styling */
+ul.nav {
+  list-style-type: none;
+  list-style-position: inside;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 10px;
+}
+
+ul.nav li {
+  padding: 5px 10px;
+}
+
+/* 8. Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* 9. Box Model Example */
+input:focus {
+  outline: 2px solid #007BFF;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.removed {
+  display: none;
+}
+
+/* 10. Multi-column News Section */
+.news-section {
+  column-count: 2;
+  column-gap: 30px;
+  column-rule: 1px solid gray;
+  margin-top: 30px;
+}
+
+/* 11. Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  ul.nav {
+    flex-direction: column;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .eventCard {
+    padding: 10px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* BONUS: Flexbox Example */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}

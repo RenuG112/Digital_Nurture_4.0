@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- 1. HTML5 Base Template Setup -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Local Community Event Portal</title>
+
+  <style>
+    /* 3. Internal CSS for Welcome Banner background */
+    #welcomeBanner {
+      background-color: #007BFF;
+      color: white;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    /* 4. Gallery image border styling */
+    .gallery-img {
+      border: 2px solid #333;
+      width: 150px;
+      height: 100px;
+    }
+
+    /* 5. Simple styling for form */
+    form {
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    /* 6. Highlight class */
+    .highlight {
+      font-weight: bold;
+      color: darkgreen;
+    }
+
+    /* 7. Styling for nav links */
+    nav a {
+      margin-right: 15px;
+      text-decoration: none;
+      color: #0056b3;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* 9. Styling coordinates display */
+    #coords {
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    /* 10. Responsive nav stacking with media query */
+    @media (max-width: 768px) {
+      nav {
+        display: flex;
+        flex-direction: column;
+      }
+      nav a {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+
+  <!-- 5. Google Font Import -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
+
+  <script>
+    // 5 & 6. JS Functions for form confirmation and events handling
+
+    // Display confirmation on form submission
+    function showConfirmation() {
+      const output = document.getElementById('confirmationMessage');
+      output.textContent = 'Thank you for registering! We have received your details.';
+    }
+
+    // Validate phone on blur
+    function validatePhone(input) {
+      const phone = input.value;
+      const regex = /^\d{10}$/;
+      if (!regex.test(phone)) {
+        alert('Please enter a valid 10-digit phone number.');
+        input.focus();
+      }
+    }
+
+    // Show fee on event type change
+    function showFee(select) {
+      const feeMap = {
+        'sports': '$20',
+        'music': '$15',
+        'tech': '$25'
+      };
+      const fee = feeMap[select.value] || '$0';
+      document.getElementById('eventFee').textContent = 'Fee: ' + fee;
+    }
+
+    // Double click to enlarge image
+    function enlargeImage(img) {
+      if (img.style.width === '300px') {
+        img.style.width = '150px';
+      } else {
+        img.style.width = '300px';
+      }
+    }
+
+    // Count chars in textarea
+    function countChars(textarea) {
+      const count = textarea.value.length;
+      document.getElementById('charCount').textContent = 'Characters: ' + count;
+    }
+
+    // 7. Video oncanplay handler
+    function videoReady() {
+      alert('Video ready to play');
+    }
+
+    // 7. Warn on page unload if form is not submitted
+    window.onbeforeunload = function () {
+      const form = document.getElementById('registrationForm');
+      if (form && !form.dataset.submitted) {
+        return 'You have unsaved changes. Are you sure you want to leave?';
+      }
+    };
+
+    // 8. Save and retrieve preferred event type
+    window.onload = function () {
+      const select = document.getElementById('eventType');
+      const saved = localStorage.getItem('preferredEvent');
+      if (saved) {
+        select.value = saved;
+        showFee(select);
+      }
+    };
+
+    function savePreference(select) {
+      localStorage.setItem('preferredEvent', select.value);
+      showFee(select);
+    }
+
+    function clearPreferences() {
+      localStorage.clear();
+      sessionStorage.clear();
+      alert('Preferences cleared.');
+    }
+
+    // 9. Geolocation
+    function findNearbyEvents() {
+      const coordsDisplay = document.getElementById('coords');
+      if (!navigator.geolocation) {
+        coordsDisplay.textContent = 'Geolocation is not supported by your browser.';
+        return;
+      }
+
+      function success(position) {
+        const latitude = position.coords.latitude.toFixed(4);
+        const longitude = position.coords.longitude.toFixed(4);
+        coordsDisplay.textContent = `Your location: Latitude ${latitude}, Longitude ${longitude}`;
+      }
+
+      function error(err) {
+        if (err.code === 1) {
+          coordsDisplay.textContent = 'Permission denied. Cannot get location.';
+        } else if (err.code === 3) {
+          coordsDisplay.textContent = 'Timeout getting location.';
+        } else {
+          coordsDisplay.textContent = 'Error getting location.';
+        }
+      }
+
+      navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true, timeout: 5000 });
+    }
+  </script>
+</head>
+<body>
+
+  <!-- 1. Navigation -->
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#events">Events</a>
+    <a href="#contact">Contact</a>
+    <a href="help.html" target="_blank">Help</a>
+  </nav>
+
+  <!-- 3. Welcome Banner with ID and inline styled span -->
+  <div id="welcomeBanner">
+    <h1>Welcome to the Local Community Event Portal</h1>
+    <p> <span style="color: red; font-weight: bold;">Special Offer:</span> Register now for exclusive benefits!</p>
+  </div>
+
+  <!-- 4. Image Gallery in table -->
+  <section id="gallery">
+    <h2 class="highlight">Community Gallery</h2>
+    <table>
+      <caption>Past Event Highlights</caption>
+      <tr>
+        <td><img src="https://via.placeholder.com/150x100?text=Event1" alt="Event 1" title="Event 1" class="gallery-img" ondblclick="enlargeImage(this)"></td>
+        <td><img src="https://via.placeholder.com/150x100?text=Event2" alt="Event 2" title="Event 2" class="gallery-img" ondblclick="enlargeImage(this)"></td>
+        <td><img src="https://via.placeholder.com/150x100?text=Event3" alt="Event 3" title="Event 3" class="gallery-img" ondblclick="enlargeImage(this)"></td>
+      </tr>
+      <tr>
+        <td><img src="https://via.placeholder.com/150x100?text=Event4" alt="Event 4" title="Event 4" class="gallery-img" ondblclick="enlargeImage(this)"></td>
+        <td><img src="https://via.placeholder.com/150x100?text=Event5" alt="Event 5" title="Event 5" class="gallery-img" ondblclick="enlargeImage(this)"></td>
+        <td><img src="https://via.placeholder.com/150x100?text=Event6" alt="Event 6" title="Event 6" class="gallery-img" ondblclick="enlargeImage(this)"></td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- 5. Event Registration Form -->
+  <section id="registration">
+    <h2 class="highlight">Register for an Event</h2>
+    <form id="registrationForm" onsubmit="showConfirmation(); this.dataset.submitted = true; return false;">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" placeholder="Your Name" required autofocus />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Your Email" required />
+
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" required />
+
+      <label for="eventType">Event Type:</label>
+      <select id="eventType" name="eventType" onchange="savePreference(this)" required>
+        <option value="">Select an event</option>
+        <option value="sports">Sports</option>
+        <option value="music">Music</option>
+        <option value="tech">Tech Talk</option>
+      </select>
+      <p id="eventFee">Fee: $0</p>
+
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" name="phone" placeholder="10-digit phone number" onblur="validatePhone(this)" />
+
+      <label for="message">Message:</label>
+      <textarea id="message" name="message" rows="4" placeholder="Your message here..." onkeyup="countChars(this)"></textarea>
+      <p id="charCount">Characters: 0</p>
+
+      <button type="submit">Submit</button>
+    </form>
+    <output id="confirmationMessage" style="color:green; font-weight:bold;"></output>
+
+    <button onclick="clearPreferences()">Clear Preferences</button>
+  </section>
+
+  <!-- 7. Video Invite with media events -->
+  <section id="videoInvite">
+    <h2 class="highlight">Event Promo Video</h2>
+    <video width="320" height="240" controls oncanplay="videoReady()">
+      <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" type="video/webm" />
+      <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </section>
+
+  <!-- 9. Geolocation -->
+  <section id="geolocationSection">
+    <h2 class="highlight">Find Nearby Events</h2>
+    <button onclick="findNearbyEvents()">Find Events Near Me</button>
+    <p id="coords"></p>
+  </section>
+
+  <!-- 10. Responsive design handled in CSS media queries above -->
+
+</body>
+</html>
